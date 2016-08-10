@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title></title>
+	<meta charset="UTF-8">
+	<title>each</title>
 </head>
-
 <body>
-    <script type="text/javascript">
-    var Event = (function() {
+	<script type="text/javascript">
+	    var Event = (function() {
         var global = this, //global 就是window
             Event,
             _default = 'default';
@@ -68,46 +66,13 @@
             };
             _create = function(namespace) {
                 var namespace = namespace || _default;
-                var cache = {},
-                    offlineStack = [], //离线堆
+                var arr=[],
                     ret = {
-                        listen: function(key, fn, last) {
-                        	_listen(key,fn,cache);
-                            if (offlineStack === null) {
-                                return;
-                            }
-                            if (last === 'last') {
-                                offlineStack.length && offlineStack.pop()(); //删除最后一个元素，并返回他 然后执行
-                            } else {
-                                each(offlineStack, function() { //遍历离线堆每个项
-                                    this();
-                                });
-                            }
-                            offlineStack = null;
+                        listen: function(val) {
+                        	arr.push(val)
                         },
                         getLen:function(){
-                        	console.dir(offlin)
-                        },
-                        one: function(key, fn, last) {
-                            _remove(key, cache, fn); //删除cache中key对应的项
-                            this.listen(key, fn, last);
-                        },
-                        remove: function(key, fn) {
-                            _remove(key, cache, fn);
-                        },
-                        trigger: function() {
-                            var fn,
-                                args,
-                                _self = this;
-                            _unshift.call(arguments, cache); //向数组的开头添加一个或更多元素
-                            args = arguments;
-                            fn = function() {
-                                return _trigger.apply(_self, args);
-                            };
-                            if (offlineStack) {
-                                return offlineStack.push(fn);
-                            }
-                            return fn();
+                        	return arr.length;
                         }
                     };
                 //namespace="default";namespaceCache{"default":ret}
@@ -125,9 +90,13 @@
                     var event = this.create();
                     event.remove(key, fn);
                 },
-                listen: function(key, fn, last) {
+                getLen:function(){
+                	var event = this.create();
+                	console.dir(event.getLen())
+                },
+                listen: function(val) {
                     var event = this.create();
-                    event.listen(key, fn, last);
+                    event.listen(val);
                 },
                 trigger: function() {
                     var event = this.create();
@@ -138,14 +107,44 @@
         return Event;
     })();
 
-Event.trigger("click", 1)
-    Event.listen('click', fn1 = function(a) {
-        alert("xxx")
-        console.log(a)
-    });
-
     
-    </script>
+    function test(){
+    	var global = this, //global 就是window
+            Event,
+            _default = 'default';
+    	var namespaceCache = {};
+    	 var _create=function(val){
+    	 	var namespace = namespace || _default;
+    	 	var arr=[];
+    	 	var ret={
+    	 		add:function(val){
+    	 			alert(arr.length)
+    	 			arr.push(val)
+    	 		},
+    	 		getLen:function(){
+    	 			alert(arr.length)
+    	 		}
+    	 	}
+    	 	return namespace ? (namespaceCache[namespace] ? namespaceCache[namespace] : namespaceCache[namespace] = ret) : ret;
+    	 }
+    	 return {
+    	 	create:_create,
+    	 	add:function(val){
+    	 		var Event=this.create();
+    	 		Event.add(val)
+    	 	},
+    	 	getLen:function(){
+    	 		var Event=this.create();
+    	 		Event.getLen();
+    	 	}
+    	 }
+    }
+    var a1=test();
+    a1.add(1);
+    a1.add(2);
+    a1.getLen();
+	</script>
+		
+		
 </body>
-
 </html>
