@@ -149,18 +149,25 @@
         }();
         return Event;
     })();
-
+Event.trigger("click1", 2)
 Event.trigger("click", 1)
+
     Event.listen('click', fn1 = function(a) {
         
         console.log(a)
     });
+     Event.listen('click1', fn2 = function(a) {
+        
+        console.log(a)
+    });
+   
 
     
-<p>
+
+    </script>
+    <p>
 1、如果先trigger某个事件的时候，先把当前某个函数推到 offlineStack，listen的时候，添加到对应的key，遍历offlineStack
 </p>
-    </script>
 </body>
 
 </html>

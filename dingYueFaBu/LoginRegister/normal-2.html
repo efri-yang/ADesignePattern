@@ -26,7 +26,7 @@
 			var _create=function(namespace){
 				var namespace=namespace || _default;
 				var cache={};
-				
+				var offlineStack = []; //离线堆
 
 				var _listen=function(key,fn){
 					if(!cache[key]){
@@ -38,17 +38,22 @@
 				var ret={
 						listen:function(key,fn){
 							_listen(key,fn);
+
 						},
 						trigger:function(){
 							var args;
 							var key=_shift.call(arguments);
+
+
 							_unshift.call(arguments,cache);
 							var _self=this;
 							var fns=cache[key];
+							
 							args=arguments;
 
 							for(var i=0;i<fns.length;i++){
 								var fn=fns[i];
+								alert(fn);
 								fn.call(_self,args);
 							}
 
@@ -70,7 +75,7 @@
 				},
 				trigger:function(){
 					var event=this.create();
-					event.trigger.call(this,arguments)
+					event.trigger.apply(this, arguments);
 				}
 			}
 		}()
