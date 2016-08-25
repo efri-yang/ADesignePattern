@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>作用域1</title>
+</head>
+<body>
+	 <script type="text/javascript">
+	var ScopeTest=(function(){
+		
+		var namespaceCache={};
+		var _create=function(){
+			var namespace="default";
+			var arr=[];
+			var ret={
+				getLen:function(){
+					alert(arr.length);
+				},
+				add:function(val){
+					arr.push(val);
+				}	
+			}
+			return namespace ? (namespaceCache[namespace] ? namespaceCache[namespace] : namespaceCache[namespace]=ret) : ret;
+		}
+		Event={
+			create:_create,
+			add:function(val){
+				var event=this.create();
+				event.add(val);
+			},
+			getLen:function(){
+				var event=this.create();
+				event.getLen();
+			}
+		}
+		
+	})()
+	Event.add(1);
+	Event.add(2);
+	Event.getLen();
+	 </script>
+	
+</body>
+</html>

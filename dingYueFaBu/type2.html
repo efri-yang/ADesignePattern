@@ -53,7 +53,7 @@
                 }
             };
             _trigger = function() {
-                var cache = _shift.call(arguments), //删除第一个元素，并返回该元素
+                var cache = _shift.call(arguments), //删除第一个元素，并返回该元素arguments = [{“click":[fn1,fn2]},"click",1]     
                     key = _shift.call(arguments), //删除第一个元素，并返回该元素
                     args = arguments,
                     _self = this,
@@ -62,7 +62,8 @@
                 if (!stack || !stack.length) {
                     return false;
                 }
-                return each(stack, function() { //
+                return each(stack, function() { 
+                    //fn.call(n, i, n); this 就是当前函数
                     return this.apply(_self, args) //数组里的每个项调用执行函数
                 });
             };
@@ -103,7 +104,7 @@
                                 _self = this;
                                 console.log(this)
                              //向数组的开头添 或更多元素 Event.trigger("click", 1)
-                             //arguments = [[],"click",1]     
+                             //arguments = [{},"click",1]     
                             _unshift.call(arguments, cache); 
                             args = arguments;
                             // Object.prototype.toString.call(args) [object Arguments]
@@ -156,6 +157,9 @@ Event.trigger("click", 1)
     });
 
     
+<p>
+1、如果先trigger某个事件的时候，先把当前某个函数推到 offlineStack，listen的时候，添加到对应的key，遍历offlineStack
+</p>
     </script>
 </body>
 

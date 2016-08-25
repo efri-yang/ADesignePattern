@@ -1,6 +1,9 @@
 <?php 
 	session_start();
 	include("conn/conn.php");
+	for($i=0;$i<100000000;$i++){
+		$a=10;
+	}
 	@$sessionId=$_SESSION["id"];
 	$arr=array("nologin"=>"true");
 	if(@$sessionId){

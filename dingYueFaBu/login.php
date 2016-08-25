@@ -8,7 +8,7 @@
 	}
 	$sql="select * from user where username='$username' and password='$password'";
 
-
+	
 
 	$result=mysql_query($sql,$conn);
 	if(!mysql_num_rows($result)){
