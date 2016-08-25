@@ -72,6 +72,7 @@
                     offlineStack = [], //离线堆
                     ret = {
                         listen: function(key, fn, last) {
+
                         	_listen(key,fn,cache);
                             if (offlineStack === null) {
                                 return;
@@ -79,6 +80,7 @@
                             if (last === 'last') {
                                 offlineStack.length && offlineStack.pop()(); //删除最后一个元素，并返回他 然后执行
                             } else {
+                            	//已经 listen
                                 each(offlineStack, function() { //遍历离线堆每个项
                                     this();
                                 });
@@ -99,12 +101,21 @@
                             var fn,
                                 args,
                                 _self = this;
-                            _unshift.call(arguments, cache); //向数组的开头添加一个或更多元素
+                                console.log(this)
+                             //向数组的开头添 或更多元素 Event.trigger("click", 1)
+                             //arguments = [[],"click",1]     
+                            _unshift.call(arguments, cache); 
                             args = arguments;
+                            // Object.prototype.toString.call(args) [object Arguments]
+                          
                             fn = function() {
+                            	//保证调用的时候this指向当前返回的对象 
                                 return _trigger.apply(_self, args);
                             };
-                            if (offlineStack) {
+
+                            //先trigger的 时候 offlineStack 就是[],所以值返回true
+                            //先trigger  就把fn加到数组中 
+                            if (offlineStack) { 
                                 return offlineStack.push(fn);
                             }
                             return fn();
@@ -140,7 +151,7 @@
 
 Event.trigger("click", 1)
     Event.listen('click', fn1 = function(a) {
-        alert("xxx")
+        
         console.log(a)
     });
 
